@@ -9,8 +9,6 @@ class DBAdapter:
 
     async def connect(self):
         self.logger.info("Connecting to database")
-        self.conn = psycopg.connect(**self.db_config)
-        self.cur = self.conn.cursor()
         self.logger.info("Connected to database")
 
     async def init(self):
@@ -18,52 +16,73 @@ class DBAdapter:
         current_dir = os.path.dirname(os.path.realpath(__file__))
         sql_file = open(current_dir + "/schema.sql", "r")
         sql = sql_file.read()
-        self.cur.execute(sql)
-        self.conn.commit()
+        async with await psycopg.AsyncConnection.connect(**self.db_config) as connection:
+            async with connection.cursor() as cur:
+                await cur.execute(sql)
+            await connection.commit()
         self.logger.info("Initialized database")
 
     async def close(self):
-        self.logger.info("Closing database connection")
-        self.cur.close()
-        self.conn.close()
-        self.logger.info("Closed database connection")
+        pass
 
-    async def execute(self, query, args=None):
+    async def execute(self, query: str, args: dict = None):
         self.current_id += 1
         id = self.current_id
-        self.logger.info(f"id: {id} - Executing query: {query}")
-        self.cur.execute(query, args)
-        self.logger.info("id: {id} - Query executed")
-        return self.cur.fetchall()
+        self.logger.info(f"job id: {id} - Executing query: {query}")
+        async with await psycopg.AsyncConnection.connect(**self.db_config) as connection:
+            async with connection.cursor() as cur:
+                await cur.execute(query, args)
+                columns: list = [desc[0] for desc in cur.description]
+        self.logger.info("job id: {id} - Query executed")
+        result = await self.cursor.fetchall()
+        return await self._return_result(result, columns)
 
-    async def execute_one(self, query, args=None):
+    async def execute_one(self, query: str, args: dict = None):
         self.current_id += 1
         id = self.current_id
-        self.logger.info(f"id: {self.current_id} - Executing query: {query}")
-        self.cur.execute(query, args)
-        self.logger.info("id: {id} - Query executed")
-        return self.cur.fetchone()
+        self.logger.info(f"job id: {self.current_id} - Executing query: {query}")
+        async with await psycopg.AsyncConnection.connect(**self.db_config) as connection:
+            async with connection.cursor() as cur:
+                await cur.execute(query, args)
+                columns: list = [desc[0] for desc in cur.description]
+        self.logger.info("job id: {id} - Query executed")
+        result = await self.cursor.fetchone()
+        return await self._return_result(result, columns)
 
-    async def fetchall(self):
+    async def fetchall(self, query: str, args: dict = None):
         self.current_id += 1
         id = self.current_id
-        self.logger.info(f"id: {id} - Fetching all results")
-        result = self.cur.fetchall()
-        self.logger.info(f"id: {id} - Fetched all results")
-        return result
+        self.logger.info(f"job id: {id} - Fetching all results")
+        async with await psycopg.AsyncConnection.connect(**self.db_config) as connection:
+            async with connection.cursor() as cur:
+                await cur.execute(query, args)
+                result = await cur.fetchall()
+                columns: list = [desc[0] for desc in cur.description]
+        self.logger.info(f"job id: {id} - Fetched all results")
+        return await self._return_result(result, columns)
 
-    async def fetchone(self):
+    async def fetchone(self, query: str, args: dict = None):
         self.current_id += 1
         id = self.current_id
-        self.logger.info(f"id: {id} - Fetching one result")
-        result = self.cur.fetchone()
-        self.logger.info(f"id: {id} - Fetched one result")
-        return result
+        self.logger.info(f"job id: {id} - Fetching one result")
+        async with await psycopg.AsyncConnection.connect(**self.db_config) as connection:
+            async with connection.cursor() as cur:
+                await cur.execute(query, args)
+                result = await cur.fetchone()
+                result = [result] if result else []
+                columns: list = [desc[0] for desc in cur.description]
+        self.logger.info(f"job id: {id} - Fetched one result")
+        return await self._return_result(result, columns)
 
     async def commit(self):
-        self.conn.commit()
+        async with await psycopg.AsyncConnection.connect(**self.db_config) as connection:
+            await connection.commit()
         self.logger.info("Committed transaction")
 
     async def rollback(self):
-        self.conn.rollback()
+        async with await psycopg.AsyncConnection.connect(**self.db_config) as connection:
+            await connection.rollback()
         self.logger.info("Rolled back transaction")
+
+    async def _return_result(self, result, columns):
+        return [dict(zip(columns, row)) for row in result]

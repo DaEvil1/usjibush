@@ -1,0 +1,96 @@
+:root {
+    --background-color: #f2f2f2;
+    --container-background-color: #fff;
+    --box-shadow-color: rgba(0, 0, 0, 0.1);
+    --input-border-color: #ccc;
+    --button-background-color: #4CAF50;
+    --button-text-color: #fff;
+    --error-color: #ff4d4d; /* Add error color */
+    --error-background-color: #ffe6e6; /* Add error background color */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: var(--container-background-color);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--box-shadow-color);
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--input-border-color);
+    border-radius: 5px;
+}
+
+.login-container input[type="text"].error,
+.login-container input[type="password"].error {
+    border-color: var(--error-color); /* Error border color */
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-container button:hover {
+    /* Add hover styles if needed */
+}
+
+.user-page {
+    background-color: var(--container-background-color);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--box-shadow-color);
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.user-page h1 {
+    margin-bottom: 20px;
+}
+
+.user-page p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.user-page .user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-page .user-info div {
+    padding: 10px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 5px;
+    background-color: var(--background-color);
+}
+
+/* General error styles */
+.error {
+    border-color: var(--error-color); /* Error border color */
+    background-color: var(--error-background-color); /* Light error background color */
+}

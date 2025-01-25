@@ -1,7 +1,18 @@
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS role (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE
+)
+;
+
+INSERT INTO role (name) VALUES ('admin') ON CONFLICT DO NOTHING;
+INSERT INTO role (name) VALUES ('user') ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS "user" (
     id SERIAL PRIMARY KEY,
     username TEXT NOT NULL UNIQUE,
-    password_hash TEXT NOT NULL
+    password_hash TEXT NOT NULL,
+    approved BOOLEAN NOT NULL DEFAULT FALSE,
+    role_id BIGINT REFERENCES role(id) NOT NULL
 )
 ;
 
@@ -9,7 +20,7 @@ CREATE TABLE IF NOT EXISTS deadpool (
     id SERIAL PRIMARY KEY,
     month TEXT NOT NULL,
     year TEXT NOT NULL,
-    user_id BIGINT REFERENCES users(id) NOT NULL,
+    user_id BIGINT REFERENCES "user"(id) NOT NULL,
     amount INT NOT NULL
 )
 ;
@@ -22,7 +33,7 @@ CREATE TABLE IF NOT EXISTS burger_location (
 
 CREATE TABLE IF NOT EXISTS burger_review (
     id SERIAL PRIMARY KEY,
-    user_id BIGINT REFERENCES users(id) NOT NULL,
+    user_id BIGINT REFERENCES "user"(id) NOT NULL,
     location BIGINT REFERENCES burger_location(id) NOT NULL,
     date DATE NOT NULL,
     burger_name TEXT NOT NULL,
