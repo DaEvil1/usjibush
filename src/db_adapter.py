@@ -29,24 +29,30 @@ class DBAdapter:
         self.current_id += 1
         id = self.current_id
         self.logger.info(f"job id: {id} - Executing query: {query}")
+        columns: list = []
+        result: list = []
         async with await psycopg.AsyncConnection.connect(**self.db_config) as connection:
             async with connection.cursor() as cur:
                 await cur.execute(query, args)
-                columns: list = [desc[0] for desc in cur.description]
+                if cur.description:
+                    columns: list = [desc[0] for desc in cur.description]
+                    result = await self.cursor.fetchall()
         self.logger.info("job id: {id} - Query executed")
-        result = await self.cursor.fetchall()
         return await self._return_result(result, columns)
 
     async def execute_one(self, query: str, args: dict = None):
         self.current_id += 1
         id = self.current_id
         self.logger.info(f"job id: {self.current_id} - Executing query: {query}")
+        columns: list = []
+        result: list = []
         async with await psycopg.AsyncConnection.connect(**self.db_config) as connection:
             async with connection.cursor() as cur:
                 await cur.execute(query, args)
-                columns: list = [desc[0] for desc in cur.description]
+                if cur.description:
+                    columns: list = [desc[0] for desc in cur.description]
+                    result = await self.cursor.fetchone()
         self.logger.info("job id: {id} - Query executed")
-        result = await self.cursor.fetchone()
         return await self._return_result(result, columns)
 
     async def fetchall(self, query: str, args: dict = None):

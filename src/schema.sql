@@ -1,18 +1,18 @@
-CREATE TABLE IF NOT EXISTS role (
+CREATE TABLE IF NOT EXISTS "role" (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE
+    "name" TEXT NOT NULL UNIQUE
 )
 ;
 
-INSERT INTO role (name) VALUES ('admin') ON CONFLICT DO NOTHING;
-INSERT INTO role (name) VALUES ('user') ON CONFLICT DO NOTHING;
+INSERT INTO "role" ("name") VALUES ('admin') ON CONFLICT DO NOTHING;
+INSERT INTO "role" ("name") VALUES ('user') ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS "user" (
     id SERIAL PRIMARY KEY,
     username TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     approved BOOLEAN NOT NULL DEFAULT FALSE,
-    role_id BIGINT REFERENCES role(id) NOT NULL
+    role_id BIGINT REFERENCES "role"(id) NOT NULL
 )
 ;
 
@@ -27,14 +27,27 @@ CREATE TABLE IF NOT EXISTS deadpool (
 
 CREATE TABLE IF NOT EXISTS burger_location (
     id SERIAL PRIMARY KEY,
-    location TEXT NOT NULL
+    "name" TEXT NOT NULL UNIQUE
 )
 ;
+
+INSERT INTO burger_location ("name") VALUES ('Bien Snackbar') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Royal Burger') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Holy Cow') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Burgern') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Hekkan') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Inside') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Dirty Vegan') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Fly Chicken') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Fridays') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Flame Burger') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Burger Boyz') ON CONFLICT DO NOTHING;
+INSERT INTO burger_location ("name") VALUES ('Smash Burgers & Shakes') ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS burger_review (
     id SERIAL PRIMARY KEY,
     user_id BIGINT REFERENCES "user"(id) NOT NULL,
-    location BIGINT REFERENCES burger_location(id) NOT NULL,
+    burger_location_id BIGINT REFERENCES burger_location(id) NOT NULL,
     date DATE NOT NULL,
     burger_name TEXT NOT NULL,
     bun_rating INT NOT NULL,
