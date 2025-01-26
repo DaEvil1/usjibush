@@ -5,15 +5,21 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <div class="header">
-        <nav>
+        <nav class="top-nav">
+        {% if user %}
             <ul>
                 <li><a href="/deadpool">Deadpool</a></li>
                 <li><a href="/burger_reviews">Burger Reviews</a></li>
-                <li><a href="/review_burger">Review a Burger</a></li>
+                <li><a href="/review_burger">Review Burger</a></li>
                 <li><a href="/profile">Profile</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
+        {% else %}
+            <ul>
+                <li><a href="/">Login</a></li>
+            </ul>
+        {% endif %}
         </nav>
     </div>

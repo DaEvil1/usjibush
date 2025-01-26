@@ -19,8 +19,17 @@ CREATE TABLE IF NOT EXISTS "user" (
 CREATE TABLE IF NOT EXISTS deadpool (
     id SERIAL PRIMARY KEY,
     month TEXT NOT NULL,
-    year TEXT NOT NULL,
+    year INT NOT NULL,
     user_id BIGINT REFERENCES "user"(id) NOT NULL,
+    amount INT NOT NULL,
+    is_winner BOOLEAN NOT NULL DEFAULT FALSE
+)
+;
+
+CREATE TABLE IF NOT EXISTS deadpool_result (
+    id SERIAL PRIMARY KEY,
+    month TEXT NOT NULL,
+    year INT NOT NULL,
     amount INT NOT NULL
 )
 ;
@@ -72,3 +81,17 @@ CREATE TABLE IF NOT EXISTS approved_user_email (
     email TEXT NOT NULL UNIQUE
 )
 ;
+
+-- functions
+CREATE OR REPLACE FUNCTION get_next_month_and_year()
+  RETURNS TABLE (
+    "month" text,
+    "year"   int
+  )
+  LANGUAGE sql
+AS $function$
+  SELECT 
+    to_char(current_date + INTERVAL '1 month', 'FMMonth') AS "month",
+    EXTRACT(YEAR FROM (current_date + INTERVAL '1 month'))::int AS "year"
+;
+$function$;

@@ -1,3 +1,34 @@
 <head>
     {% include 'header.jinja' %}
 </head>
+<body>
+<form action="/deadpool" method="post">
+    <label for="number">Deadpool guess for {{next_month}}:</label>
+    <input type="number" id="amount" name="amount" value="{{ current_guess if current_guess is not none else '' }}" required>
+    <button type="submit">Submit</button>
+</form>
+
+{% if deadpool_results %}
+    <h2>Deadpool Results</h2>
+    <ul>
+        {% for month, results in deadpool_results.items() %}
+            <li>
+                <strong>{{ month }}</strong>
+                <ul>
+                    {% for result in results %}
+                        <li>
+                            {% if result.is_winner %}
+                                <strong>{{ result.username }}: {{ result.guess_amount }}</strong>
+                            {% else %}
+                                {{ result.username }}: {{ result.guess_amount }}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results available.</p>
+{% endif %}
+</body>

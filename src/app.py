@@ -7,7 +7,7 @@ from sanic.response import text
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from dotenv import load_dotenv
 
-import os, psycopg, asyncio
+import os, psycopg, asyncio, datetime
 
 import db_adapter, util, sessions
 
@@ -56,10 +56,6 @@ def render_template(template_name: str, **context: dict):
     template = env.get_template(template_name)
     return html(template.render(context))
 
-@app.route("/style.css", methods=["GET"])
-async def style(request: Request):
-    return await response.file(os.getcwd() + "/src/templates/style.css")
-
 @app.route("/", methods=["GET"])
 async def index(request: Request):
     if request.cookies.get("session_token") in app.ctx.sessions.sessions:
@@ -96,7 +92,27 @@ async def deadpool(request: Request):
     if not session_token or session_token not in app.ctx.sessions.sessions:
         return redirect("/")
     user: dict = app.ctx.sessions.sessions[session_token]
-    return render_template("deadpool.jinja", user=user)
+    deadpool_results = await app.ctx.util.get_deadpool_results()
+    current_guess = await app.ctx.util.get_deadpool_guess(user.username)
+    today = datetime.date.today()
+    next_month = (today.replace(day=28) + datetime.timedelta(days=4)).strftime("%B")
+    return render_template(
+        "deadpool.jinja",
+        user=user,
+        deadpool_results=deadpool_results,
+        current_guess=current_guess,
+        next_month=next_month
+        )
+
+@app.route("/deadpool", methods=["POST"])
+async def deadpool_post(request: Request):
+    session_token = request.cookies.get("session_token")
+    if not session_token or session_token not in app.ctx.sessions.sessions:
+        return redirect("/")
+    user: dict = app.ctx.sessions.sessions[session_token]
+    amount = request.form.get("amount")
+    await app.ctx.util.add_deadpool_guess(user.username, amount)
+    return redirect("/deadpool")
 
 @app.route("/review_burger", methods=["GET"])
 async def review_burger_get(request: Request):
@@ -105,8 +121,7 @@ async def review_burger_get(request: Request):
         return redirect("/")
     user: dict = app.ctx.sessions.sessions[session_token]
     burger_locations = await app.ctx.util.get_burger_locations()
-    burger_reviews = await app.ctx.util.get_burger_reviews(user.username)
-    return render_template("review_burger.jinja", user=user, burger_locations=burger_locations, burger_reviews=burger_reviews)
+    return render_template("review_burger.jinja", user=user, burger_locations=burger_locations)
 
 @app.route("/review_burger", methods=["POST"])
 async def review_burger_post(request: Request):
@@ -162,6 +177,23 @@ async def logout(request: Request):
         await app.ctx.sessions.logout(session_token)
     return redirect("/")
 
+@app.route("/change_password", methods=["POST"])
+async def change_password(request: Request):
+    session_token = request.cookies.get("session_token")
+    if not session_token or session_token not in app.ctx.sessions.sessions:
+        return redirect("/")
+    user: dict = app.ctx.sessions.sessions[session_token]
+    current_password = request.form.get("current_password") if request.form.get("current_password") else ""
+    new_password = request.form.get("new_password") if request.form.get("new_password") else ""
+    confirm_new_password = request.form.get("confirm_new_password") if request.form.get("confirm_new_password") else ""
+    if new_password != confirm_new_password:
+        return render_template("profile.jinja", user=user, error="New passwords do not match")
+    login: dict = await app.ctx.util.login(user.username, current_password)
+    if not login["success"]:
+        return render_template("profile.jinja", user=user, error="Incorrect password")
+    await app.ctx.util.change_password(user.username, new_password)
+    return render_template("profile.jinja", user=user, success="Password changed")
+
 @app.route("/burger_review_submitted", methods=["GET"])
 async def burger_review_submitted(request: Request):
     session_token = request.cookies.get("session_token")
@@ -170,7 +202,24 @@ async def burger_review_submitted(request: Request):
     user: dict = app.ctx.sessions.sessions[session_token]
     return render_template("burger_review_submitted.jinja", user=user)
 
+# static
 app.static("/static", os.getcwd() + "/src/static")
+
+# rest
+@app.route("/rest/burger_review/<burger_location_id>", methods=["GET"])
+async def rest_burger_review(request: Request, burger_location_id: str):
+    session_token = request.cookies.get("session_token")
+    if not session_token or session_token not in app.ctx.sessions.sessions:
+        return response.json({"error": "Not logged in"}, status=401)
+    user: dict = app.ctx.sessions.sessions[session_token]
+    burger_review = await app.ctx.util.get_burger_reviews(user.username, burger_location_id)
+    return response.json(burger_review, default=str)
+
+@app.route("/rest/burger_locations", methods=["GET"])
+async def rest_burger_locations(request: Request):
+    burger_locations = await app.ctx.util.get_burger_locations()
+    return response.json(burger_locations)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)

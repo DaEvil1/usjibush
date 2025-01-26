@@ -22,25 +22,32 @@ var config = {
     }
 };
 
-var configLoggedIn = Object.assign({}, config, {
-    name: "configLoggedIn",
-    entry: "./js/logged_in.js",
+var configReviewBurger = Object.assign({}, config, {
+    name: "configReviewBurger",
+    entry: "./js/review_burger.js",
     output: {
-        path: __dirname + "../../src/static/",
-        publicPath: "../../src/static/",
-        filename: "../../src/static/js/app.loggedin.min.js",
+        path: __dirname + "../../static/",
+        publicPath: "../static/",
+        filename: "../static/js/app.review_burger.min.js",
         library: 'publicApp',
         libraryTarget: 'window'
     },
     devtool: 'eval-source-map',
     resolve:  { 
         alias: {
-            'vue': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
+            'vue': 'vue/dist/vue.esm-bundler.js' // 'vue/dist/vue.common.js' for webpack 1
         }
     },
     plugins: [
+    // Define Bundler Build Feature Flags
+    new webpack.DefinePlugin({
+        // Drop Options API from bundle
+        __VUE_OPTIONS_API__: false,
+        __VUE_PROD_DEVTOOLS__: false,
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__ : false
+      }),
     ]
 });
 
 // Return Array of Configurations
-module.exports = [configLoggedIn];
+module.exports = [configReviewBurger];
