@@ -76,6 +76,26 @@ where
 ORDER BY dr.year, dr.month, u.username
 """
 
+GET_DEADPOOL_ANSWER_PREVIOUS_MONTH_SQL = """
+SELECT
+dr.amount
+FROM deadpool_result dr
+WHERE dr.month = (select "month" from get_previous_month_and_year())
+and dr.year = (select "year" from get_previous_month_and_year())
+"""
+
+ADD_DEDPOOL_ANSWER_PREVIOUS_MONTH_SQL = """
+INSERT INTO deadpool_result (month, year, amount)
+VALUES ((select "month" from get_previous_month_and_year()), (select "year" from get_previous_month_and_year()), %(amount)s)
+"""
+
+UPDATE_DEADPOOL_ANSWER_PREVIOUS_MONTH_SQL = """
+UPDATE deadpool_result
+SET amount = %(amount)s
+WHERE month = (select "month" from get_previous_month_and_year())
+AND year = (select "year" from get_previous_month_and_year())
+"""
+
 GET_DEADPOOL_GUESS_SQL = """
 with next_month as (
 select extract(year from now()) as year, extract(month from now()) as month
@@ -109,4 +129,23 @@ CHECK_EXISTING_DEADPOOL_GUESS_SQL = """
 SELECT id FROM deadpool WHERE user_id = (SELECT id FROM "user" WHERE username = %(username)s) 
 AND month = (select "month" from get_next_month_and_year())
 AND year = (select "year" from get_next_month_and_year())
+"""
+
+IS_ADMIN_SQL = """
+SELECT
+case when r.name = 'admin' then true else false end as is_admin
+from "user" u
+join "role" r on u.role_id = r.id
+where u.username = %(username)s
+"""
+
+SET_DEADPOOL_WINNERS_PREVIOUS_MONTH_SQL = """
+UPDATE deadpool d
+SET is_winner = true
+FROM deadpool_result dr
+WHERE d.month = dr.month
+AND d.year = dr.year
+AND d.amount = (select min(amount) from deadpool where month = dr.month and year = dr.year)
+AND dr.month = (select "month" from get_previous_month_and_year())
+AND dr.year = (select "year" from get_previous_month_and_year())
 """

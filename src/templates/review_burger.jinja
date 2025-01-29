@@ -5,94 +5,96 @@
     <h1>Review Burger</h1>
 </head>
 <body>
-    <div class="form_div" id="app">
-        <form action="/review_burger" method="post">
-            <label for="location">Location:</label>
-            <select id="location" name="location" v-model="formData.location_id" required>
-                <option value="">Select a location</option>
-                <option v-for="location in locations" :value="location.id" :selected="location.id == formData.location_id">[[ location.name ]]</option>
-            </select><br>
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date" v-model="formData.date" required><br>
+    <div class = "content">
+        <div class="form_div" id="app">
+            <form action="/review_burger" method="post">
+                <label for="location">Location:</label>
+                <select id="location" name="location" v-model="formData.location_id" required>
+                    <option value="">Select a location</option>
+                    <option v-for="location in locations" :value="location.id" :selected="location.id == formData.location_id">[[ location.name ]]</option>
+                </select><br>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" v-model="formData.date" required><br>
 
-            <label for="burger_name">Burger Name:</label>
-            <input type="text" id="burger_name" name="burger_name" v-model="formData.burger_name" required><br>
+                <label for="burger_name">Burger Name:</label>
+                <input type="text" id="burger_name" name="burger_name" v-model="formData.burger_name" required><br>
 
-            {% set ratings = [0, 1, 2, 3, 4, 5] %}
-            {% set x_factor_ratings = [0, 1] %}
+                {% set ratings = [0, 1, 2, 3, 4, 5] %}
+                {% set x_factor_ratings = [0, 1] %}
 
-            <label for="bun_rating">Bun Rating:</label>
-            <select id="bun_rating" name="bun_rating" v-model="formData.bun_rating" required>
-                {% for rating in ratings %}
-                <option value="{{ rating }}">{{ rating }}</option>
-                {% endfor %}
-            </select><br>
+                <label for="bun_rating">Bun Rating:</label>
+                <select id="bun_rating" name="bun_rating" v-model="formData.bun_rating" required>
+                    {% for rating in ratings %}
+                    <option value="{{ rating }}">{{ rating }}</option>
+                    {% endfor %}
+                </select><br>
 
-            <label for="bun_remarks">Bun Remarks:</label>
-            <textarea id="bun_remarks" name="bun_remarks" class="text_box" v-model="formData.bun_remarks"></textarea><br>
+                <label for="bun_remarks">Bun Remarks:</label>
+                <textarea id="bun_remarks" name="bun_remarks" class="text_box" v-model="formData.bun_remarks"></textarea><br>
 
-            <label for="patty_rating">Patty Rating:</label>
-            <select id="patty_rating" name="patty_rating" v-model="formData.patty_rating" required>
-                {% for rating in ratings %}
-                <option value="{{ rating }}">{{ rating }}</option>
-                {% endfor %}
-            </select><br>
+                <label for="patty_rating">Patty Rating:</label>
+                <select id="patty_rating" name="patty_rating" v-model="formData.patty_rating" required>
+                    {% for rating in ratings %}
+                    <option value="{{ rating }}">{{ rating }}</option>
+                    {% endfor %}
+                </select><br>
 
-            <label for="patty_remarks">Patty Remarks:</label>
-            <textarea id="patty_remarks" name="patty_remarks" class="text_box" v-model="formData.patty_remarks"></textarea><br>
+                <label for="patty_remarks">Patty Remarks:</label>
+                <textarea id="patty_remarks" name="patty_remarks" class="text_box" v-model="formData.patty_remarks"></textarea><br>
 
-            <label for="toppings_rating">Toppings Rating:</label>
-            <select id="toppings_rating" name="toppings_rating" v-model="formData.toppings_rating" required>
-                {% for rating in ratings %}
-                <option value="{{ rating }}">{{ rating }}</option>
-                {% endfor %}
-            </select><br>
+                <label for="toppings_rating">Toppings Rating:</label>
+                <select id="toppings_rating" name="toppings_rating" v-model="formData.toppings_rating" required>
+                    {% for rating in ratings %}
+                    <option value="{{ rating }}">{{ rating }}</option>
+                    {% endfor %}
+                </select><br>
 
-            <label for="toppings_remarks">Toppings Remarks:</label>
-            <textarea id="toppings_remarks" name="toppings_remarks" class="text_box" v-model="formData.toppings_remarks"></textarea><br>
+                <label for="toppings_remarks">Toppings Remarks:</label>
+                <textarea id="toppings_remarks" name="toppings_remarks" class="text_box" v-model="formData.toppings_remarks"></textarea><br>
 
-            <label for="fries_rating">Fries Rating:</label>
-            <select id="fries_rating" name="fries_rating" v-model="formData.fries_rating">
-                {% for rating in ratings %}
-                <option value="{{ rating }}">{{ rating }}</option>
-                {% endfor %}
-            </select><br>
+                <label for="fries_rating">Fries Rating:</label>
+                <select id="fries_rating" name="fries_rating" v-model="formData.fries_rating">
+                    {% for rating in ratings %}
+                    <option value="{{ rating }}">{{ rating }}</option>
+                    {% endfor %}
+                </select><br>
 
-            <label for="fries_remarks">Fries Remarks:</label>
-            <textarea id="fries_remarks" name="fries_remarks" class="text_box" v-model="formData.fries_remarks"></textarea><br>
+                <label for="fries_remarks">Fries Remarks:</label>
+                <textarea id="fries_remarks" name="fries_remarks" class="text_box" v-model="formData.fries_remarks"></textarea><br>
 
-            <label for="location_rating">Location Rating:</label>
-            <select id="location_rating" name="location_rating" v-model="formData.location_rating" required>
-                {% for rating in ratings %}
-                <option value="{{ rating }}">{{ rating }}</option>
-                {% endfor %}
-            </select><br>
+                <label for="location_rating">Location Rating:</label>
+                <select id="location_rating" name="location_rating" v-model="formData.location_rating" required>
+                    {% for rating in ratings %}
+                    <option value="{{ rating }}">{{ rating }}</option>
+                    {% endfor %}
+                </select><br>
 
-            <label for="location_remarks">Location Remarks:</label>
-            <textarea id="location_remarks" name="location_remarks" class="text_box" v-model="formData.location_remarks"></textarea><br>
+                <label for="location_remarks">Location Remarks:</label>
+                <textarea id="location_remarks" name="location_remarks" class="text_box" v-model="formData.location_remarks"></textarea><br>
 
-            <label for="value_rating">Value Rating:</label>
-            <select id="value_rating" name="value_rating" v-model="formData.value_rating" required>
-                {% for rating in ratings %}
-                <option value="{{ rating }}">{{ rating }}</option>
-                {% endfor %}
-            </select><br>
+                <label for="value_rating">Value Rating:</label>
+                <select id="value_rating" name="value_rating" v-model="formData.value_rating" required>
+                    {% for rating in ratings %}
+                    <option value="{{ rating }}">{{ rating }}</option>
+                    {% endfor %}
+                </select><br>
 
-            <label for="value_remarks">Value Remarks:</label>
-            <textarea id="value_remarks" name="value_remarks" class="text_box" v-model="formData.value_remarks"></textarea><br>
+                <label for="value_remarks">Value Remarks:</label>
+                <textarea id="value_remarks" name="value_remarks" class="text_box" v-model="formData.value_remarks"></textarea><br>
 
-            <label for="x_factor_rating">X-Factor Rating:</label>
-            <select id="x_factor_rating" name="x_factor_rating" v-model="formData.x_factor_rating" required>
-                {% for rating in x_factor_ratings %}
-                <option value="{{ rating }}">{{ rating }}</option>
-                {% endfor %}
-            </select><br>
+                <label for="x_factor_rating">X-Factor Rating:</label>
+                <select id="x_factor_rating" name="x_factor_rating" v-model="formData.x_factor_rating" required>
+                    {% for rating in x_factor_ratings %}
+                    <option value="{{ rating }}">{{ rating }}</option>
+                    {% endfor %}
+                </select><br>
 
-            <label for="x_factor_remarks">X-Factor Remarks:</label>
-            <textarea id="x_factor_remarks" name="x_factor_remarks" class="text_box" v-model="formData.x_factor_remarks"></textarea><br>
+                <label for="x_factor_remarks">X-Factor Remarks:</label>
+                <textarea id="x_factor_remarks" name="x_factor_remarks" class="text_box" v-model="formData.x_factor_remarks"></textarea><br>
 
-            <input type="submit" value="Submit Review">
-        </form>
+                <input type="submit" value="Submit Review">
+            </form>
+        </div>
     </div>
 </body>
 <script type="text/javascript" src="static/js/app.review_burger.min.js"></script>

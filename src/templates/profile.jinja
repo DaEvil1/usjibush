@@ -5,51 +5,53 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="user-page">
-        <h2>Welcome, {{ user.username }}!</h2>
-        <button id="change-password-btn" style="display: {{ 'block' if not error and not success else 'none' }}">Change Password</button>
-        <div id="change-password-form" style="display: {{ 'none' if not error and not success else 'block' }}">
-            {% if error %}
-                <div class="error">{{ error }}</div>
-            {% endif %}
-            {% if success %}
-                <div class="success">{{ success }}</div>
-            {% endif %}
-            <form action="/change_password" method="post">
-            <div>
-                <label for="current_password">Current Password:</label>
-                <input type="password" id="current_password" name="current_password" required>
+    <div class = "content">
+        <div class="user-page">
+            <h2>Welcome, {{ user.username }}!</h2>
+            <button id="change-password-btn" style="display: {{ 'block' if not error and not success else 'none' }}">Change Password</button>
+            <div id="change-password-form" style="display: {{ 'none' if not error and not success else 'block' }}">
+                {% if error %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+                {% if success %}
+                    <div class="success">{{ success }}</div>
+                {% endif %}
+                <form action="/change_password" method="post">
+                <div>
+                    <label for="current_password">Current Password:</label>
+                    <input type="password" id="current_password" name="current_password" required>
+                </div>
+                <div>
+                    <label for="new_password">New Password:</label>
+                    <input type="password" id="new_password" name="new_password" required>
+                </div>
+                <div>
+                    <label for="confirm_new_password">Confirm New Password:</label>
+                    <input type="password" id="confirm_new_password" name="confirm_new_password" required>
+                </div>
+                <div>
+                    <button class="cancel_button" type="button" id="cancel-btn">Cancel</button>
+                </div>
+                <div>
+                    <button type="submit">Update Password</button>
+                </div>
+                </form>
             </div>
-            <div>
-                <label for="new_password">New Password:</label>
-                <input type="password" id="new_password" name="new_password" required>
-            </div>
-            <div>
-                <label for="confirm_new_password">Confirm New Password:</label>
-                <input type="password" id="confirm_new_password" name="confirm_new_password" required>
-            </div>
-            <div>
-                <button class="cancel_button" type="button" id="cancel-btn">Cancel</button>
-            </div>
-            <div>
-                <button type="submit">Update Password</button>
-            </div>
-            </form>
+            <script>
+                document.getElementById('change-password-btn').addEventListener('click', function() {
+                    var form = document.getElementById('change-password-form');
+                    form.style.display = 'block';
+                    var changePasswordBtn = document.getElementById('change-password-btn');
+                    changePasswordBtn.style.display = 'none';
+                });
+                document.getElementById('cancel-btn').addEventListener('click', function() {
+                    var form = document.getElementById('change-password-form');
+                    form.style.display = 'none';
+                    var changePasswordBtn = document.getElementById('change-password-btn');
+                    changePasswordBtn.style.display = 'block';
+                });
+            </script>
         </div>
-        <script>
-            document.getElementById('change-password-btn').addEventListener('click', function() {
-                var form = document.getElementById('change-password-form');
-                form.style.display = 'block';
-                var changePasswordBtn = document.getElementById('change-password-btn');
-                changePasswordBtn.style.display = 'none';
-            });
-            document.getElementById('cancel-btn').addEventListener('click', function() {
-                var form = document.getElementById('change-password-form');
-                form.style.display = 'none';
-                var changePasswordBtn = document.getElementById('change-password-btn');
-                changePasswordBtn.style.display = 'block';
-            });
-        </script>
     </div>
 </body>
 </html>

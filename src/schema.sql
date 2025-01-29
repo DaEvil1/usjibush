@@ -95,3 +95,16 @@ AS $function$
     EXTRACT(YEAR FROM (current_date + INTERVAL '1 month'))::int AS "year"
 ;
 $function$;
+
+CREATE OR REPLACE FUNCTION get_previous_month_and_year()
+  RETURNS TABLE (
+    "month" text,
+    "year"   int
+  )
+  LANGUAGE sql
+AS $function$
+    SELECT 
+        to_char(current_date - INTERVAL '1 month', 'FMMonth') AS "month",
+        EXTRACT(YEAR FROM (current_date - INTERVAL '1 month'))::int AS "year"
+;
+$function$;

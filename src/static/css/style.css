@@ -11,6 +11,7 @@
     --header-opacity: 1;
     --link-color: #2bff00;
     --link-visited-color: #2bff00;
+    --admin-color: #0026ff;
 }
 
 /* Reset */
@@ -100,7 +101,6 @@ h1 {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px var(--box-shadow-color);
-    margin-top: 160px;
 }
 
 .login-container h2 {
@@ -125,6 +125,16 @@ h1 {
     width: 100%;
     padding: 10px;
     background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.admin_button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--admin-color);
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -162,7 +172,6 @@ input[type="submit"] {
     box-shadow: 0 0 10px var(--box-shadow-color);
     max-width: 800px;
     margin: 20px auto;
-    margin-top: 160px;
 }
 
 .user-page h1 {
@@ -271,4 +280,9 @@ a:visited {
     margin: 10px 0;
     border-radius: 5px;
     box-shadow: 0 0 5px var(--box-shadow-color);
+}
+
+.content {
+    margin-top: 160px;
+    width: calc(100% - 100px);
 }

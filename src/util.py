@@ -18,6 +18,10 @@ class Util:
             user = await self.db_adapter.fetchone(sql_templates.GET_USER_SQL, {"username": username})
         return {"success": success, "user": user[0]}
     
+    async def is_admin(self, username: str) -> bool:
+        user = await self.db_adapter.fetchone(sql_templates.IS_ADMIN_SQL, {"username": username})
+        return user[0]["is_admin"]
+    
     async def change_password(self, username: str, password: str) -> None:
         password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
         await self.db_adapter.execute(sql_templates.CHANGE_PASSWORD_SQL, {"username": username, "password_hash": password_hash})
@@ -99,3 +103,20 @@ class Util:
             await self.db_adapter.execute(sql_templates.UPDATE_DEADPOOL_GUESS_SQL, {**guess})
         else:
             await self.db_adapter.execute(sql_templates.ADD_DEADPOOL_GUESS_SQL, {**guess})
+
+    async def get_deadpool_answer_previous_month(self) -> dict:
+        answer_previous_month: int = None
+        db_result = await self.db_adapter.fetchone(sql_templates.GET_DEADPOOL_ANSWER_PREVIOUS_MONTH_SQL)
+        if db_result:
+            answer_previous_month = db_result[0]["amount"]
+        return answer_previous_month
+    
+    async def set_deadpool_answer_previous_month(self, amount: int) -> None:
+        existing_deadpool_answer_data = self.get_deadpool_answer_previous_month()
+        if existing_deadpool_answer_data != None:
+            await self.db_adapter.execute(sql_templates.UPDATE_DEADPOOL_ANSWER_PREVIOUS_MONTH_SQL, {"amount": amount})
+        else:
+            await self.db_adapter.execute(sql_templates.ADD_DEDPOOL_ANSWER_PREVIOUS_MONTH_SQL, {"amount": amount})
+    
+    async def set_deadpool_winners_previous_month(self) -> None:
+        await self.db_adapter.execute(sql_templates.SET_DEADPOOL_WINNERS_PREVIOUS_MONTH_SQL)

@@ -94,14 +94,20 @@ async def deadpool(request: Request):
     user: dict = app.ctx.sessions.sessions[session_token]
     deadpool_results = await app.ctx.util.get_deadpool_results()
     current_guess = await app.ctx.util.get_deadpool_guess(user.username)
+    is_admin = await app.ctx.util.is_admin(user.username)
     today = datetime.date.today()
     next_month = (today.replace(day=28) + datetime.timedelta(days=4)).strftime("%B")
+    previous_month = (today.replace(day=1) - datetime.timedelta(days=1)).strftime("%B")
+    result_previous_month = await app.ctx.util.get_deadpool_answer_previous_month()
     return render_template(
         "deadpool.jinja",
         user=user,
+        is_admin=is_admin,
         deadpool_results=deadpool_results,
         current_guess=current_guess,
-        next_month=next_month
+        next_month=next_month,
+        previous_month=previous_month,
+        result_previous_month=result_previous_month
         )
 
 @app.route("/deadpool", methods=["POST"])
@@ -112,6 +118,19 @@ async def deadpool_post(request: Request):
     user: dict = app.ctx.sessions.sessions[session_token]
     amount = request.form.get("amount")
     await app.ctx.util.add_deadpool_guess(user.username, amount)
+    return redirect("/deadpool")
+
+@app.route("/deadpool_result", methods=["POST"])
+async def deadpool_results_post(request: Request):
+    session_token = request.cookies.get("session_token")
+    if not session_token or session_token not in app.ctx.sessions.sessions:
+        return redirect("/")
+    user: dict = app.ctx.sessions.sessions[session_token]
+    if not await app.ctx.util.is_admin(user.username):
+        return redirect("/")
+    amount = request.form.get("amount")
+    await app.ctx.util.set_deadpool_answer_previous_month(amount)
+    await app.ctx.util.set_deadpool_winners_previous_month()
     return redirect("/deadpool")
 
 @app.route("/review_burger", methods=["GET"])

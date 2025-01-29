@@ -5,28 +5,29 @@
     <h1>Burger Reviews</h1>
 </head>
 <body>
-    <h1>Burger Reviews</h1>
-    {% for review in burger_reviews %}
-        <div class="review">
-            <h2>{{ review.burger_name }}</h2>
-            <p><strong>Reviewed by:</strong> {{ review.username }}</p>
-            <p><strong>Location:</strong> {{ review.location }}</p>
-            <p><strong>Date:</strong> {{ review.date }}</p>
-            <p><strong>Bun Rating:</strong> {{ review.bun_rating }}/5</p>
-            <p>{{ review.bun_remarks }}</p>
-            <p><strong>Patty Rating:</strong> {{ review.patty_rating }}/5</p>
-            <p>{{ review.patty_remarks }}</p>
-            <p><strong>Toppings Rating:</strong> {{ review.toppings_rating }}/5</p>
-            <p>{{ review.toppings_remarks }}</p>
-            <p><strong>Fries Rating:</strong> {{ review.fries_rating }}/5</p>
-            <p>{{ review.fries_remarks }}</p>
-            <p><strong>Location Rating:</strong> {{ review.location_rating }}/5</p>
-            <p>{{ review.location_remarks }}</p>
-            <p><strong>Value Rating:</strong> {{ review.value_rating }}/5</p>
-            <p>{{ review.value_remarks }}</p>
-            <p><strong>X-Factor Rating:</strong> {{ review.x_factor_rating }}/5</p>
-            <p>{{ review.x_factor_remarks }}</p>
-        </div>
-    {% endfor %}
+    <div class = "content">
+        {% for review in burger_reviews %}
+            <div class="review">
+                <h2>{{ review.burger_name }}</h2>
+                <p><strong>Reviewed by:</strong> {{ review.username }}</p>
+                <p><strong>Location:</strong> {{ review.location }}</p>
+                <p><strong>Date:</strong> {{ review.date }}</p>
+                <p><strong>Bun Rating:</strong> {{ review.bun_rating }}/5</p>
+                <p>{{ review.bun_remarks }}</p>
+                <p><strong>Patty Rating:</strong> {{ review.patty_rating }}/5</p>
+                <p>{{ review.patty_remarks }}</p>
+                <p><strong>Toppings Rating:</strong> {{ review.toppings_rating }}/5</p>
+                <p>{{ review.toppings_remarks }}</p>
+                <p><strong>Fries Rating:</strong> {{ review.fries_rating }}/5</p>
+                <p>{{ review.fries_remarks }}</p>
+                <p><strong>Location Rating:</strong> {{ review.location_rating }}/5</p>
+                <p>{{ review.location_remarks }}</p>
+                <p><strong>Value Rating:</strong> {{ review.value_rating }}/5</p>
+                <p>{{ review.value_remarks }}</p>
+                <p><strong>X-Factor Rating:</strong> {{ review.x_factor_rating }}/5</p>
+                <p>{{ review.x_factor_remarks }}</p>
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

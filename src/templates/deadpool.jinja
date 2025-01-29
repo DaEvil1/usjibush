@@ -2,33 +2,46 @@
     {% include 'header.jinja' %}
 </head>
 <body>
-<form action="/deadpool" method="post">
-    <label for="number">Deadpool guess for {{next_month}}:</label>
-    <input type="number" id="amount" name="amount" value="{{ current_guess if current_guess is not none else '' }}" required>
-    <button type="submit">Submit</button>
-</form>
+    <div class = "content">
+        {% if is_admin %}
+            <h2>Admin Controls</h2>
+            <h3>Result for deadpool for {{previous_month}}:</h3>
+            <form action="/deadpool_result" method="post">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" required value="{{ result_previous_month if result_previous_month is not none else '' }}">
+                <button type="submit" class="admin_button">Submit</button>
+            </form>
+            <br>
+        {% endif %}
 
-{% if deadpool_results %}
-    <h2>Deadpool Results</h2>
-    <ul>
-        {% for month, results in deadpool_results.items() %}
-            <li>
-                <strong>{{ month }}</strong>
-                <ul>
-                    {% for result in results %}
-                        <li>
-                            {% if result.is_winner %}
-                                <strong>{{ result.username }}: {{ result.guess_amount }}</strong>
-                            {% else %}
-                                {{ result.username }}: {{ result.guess_amount }}
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No results available.</p>
-{% endif %}
+        <form action="/deadpool" method="post">
+            <label for="number">Deadpool guess for {{next_month}}:</label>
+            <input type="number" id="amount" name="amount" value="{{ current_guess if current_guess is not none else '' }}" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if deadpool_results %}
+            <h2>Deadpool Results</h2>
+            <ul>
+                {% for month, results in deadpool_results.items() %}
+                    <li>
+                        <strong>{{ month }}</strong>
+                        <ul>
+                            {% for result in results %}
+                                <li>
+                                    {% if result.is_winner %}
+                                        <strong>{{ result.username }}: {{ result.guess_amount }}</strong>
+                                    {% else %}
+                                        {{ result.username }}: {{ result.guess_amount }}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results available.</p>
+        {% endif %}
+    </div>
 </body>
