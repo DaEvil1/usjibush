@@ -13,7 +13,7 @@ import db_adapter, util, sessions
 
 # Load environment variables
 current_dir = os.path.dirname(os.path.realpath(__file__))
-load_dotenv(current_dir + "../.env")
+load_dotenv(current_dir + "/../.env")
 DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_NAME = os.getenv("DB_NAME")
