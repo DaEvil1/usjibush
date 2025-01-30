@@ -67,6 +67,8 @@ CREATE TABLE IF NOT EXISTS burger_review (
     toppings_remarks TEXT,
     fries_rating INT,
     fries_remarks TEXT,
+    taste_total_rating INT NOT NULL,
+    taste_total_remarks TEXT,
     location_rating INT NOT NULL,
     location_remarks TEXT,
     value_rating INT NOT NULL,

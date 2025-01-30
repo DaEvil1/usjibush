@@ -164,6 +164,8 @@ async def review_burger_post(request: Request):
         "toppings_remarks": request.form.get("toppings_remarks"),
         "fries_rating": request.form.get("fries_rating"),
         "fries_remarks": request.form.get("fries_remarks"),
+        "taste_total_rating": request.form.get("taste_total_rating"),
+        "taste_total_remarks": request.form.get("taste_total_remarks"),
         "location_rating": request.form.get("location_rating"),
         "location_remarks": request.form.get("location_remarks"),
         "value_rating": request.form.get("value_rating"),

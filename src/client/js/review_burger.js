@@ -15,6 +15,8 @@ const app = createApp({
             toppings_remarks: '',
             fries_rating: 0,
             fries_remarks: '',
+            taste_total_rating: 0,
+            taste_total_remarks: '',
             location_rating: 0,
             location_remarks: '',
             value_rating: 0,
@@ -43,6 +45,8 @@ const app = createApp({
                     formData.value['toppings_remarks'] = data['toppings_remarks'];
                     formData.value['fries_rating'] = data['fries_rating'];
                     formData.value['fries_remarks'] = data['fries_remarks'];
+                    formData.value['taste_total_rating'] = data['taste_total_rating'];
+                    formData.value['taste_total_remarks'] = data['taste_total_remarks'];
                     formData.value['location_rating'] = data['location_rating'];
                     formData.value['location_remarks'] = data['location_remarks'];
                     formData.value['value_rating'] = data['value_rating'];

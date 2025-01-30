@@ -62,6 +62,16 @@
                 <label for="fries_remarks">Fries Remarks:</label>
                 <textarea id="fries_remarks" name="fries_remarks" class="text_box" v-model="formData.fries_remarks"></textarea><br>
 
+                <label for="taste_total_rating">Taste Total Rating:</label>
+                <select id="taste_total_rating" name="taste_total_rating" v-model="formData.taste_total_rating" required>
+                    {% for rating in ratings %}
+                    <option value="{{ rating }}">{{ rating }}</option>
+                    {% endfor %}
+                </select><br>
+
+                <label for="taste_total_remarks">Taste Total Remarks:</label>
+                <textarea id="taste_total_remarks" name="taste_total_remarks" class="text_box" v-model="formData.taste_total_remarks"></textarea><br>
+
                 <label for="location_rating">Location Rating:</label>
                 <select id="location_rating" name="location_rating" v-model="formData.location_rating" required>
                     {% for rating in ratings %}
