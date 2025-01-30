@@ -25,9 +25,11 @@ SITE_URL = os.getenv("SITE_URL")
 app = Sanic("Usjibush")
 session = Session(app, interface=InMemorySessionInterface())
 
+current_dir = os.path.dirname(os.path.realpath(__file__))
+
 # Set up Jinja2 environment for templates
 env = Environment(
-    loader=FileSystemLoader(os.getcwd() +'/src/templates'),
+    loader=FileSystemLoader(current_dir +'/templates'),
     autoescape=select_autoescape()
 )
 
@@ -223,7 +225,7 @@ async def burger_review_submitted(request: Request):
     return render_template("burger_review_submitted.jinja", user=user)
 
 # static
-app.static("/static", os.getcwd() + "/src/static")
+app.static("/static", current_dir + "/static")
 
 # rest
 @app.route("/rest/burger_review/<burger_location_id>", methods=["GET"])
