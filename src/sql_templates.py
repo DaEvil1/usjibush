@@ -83,7 +83,8 @@ location_remarks = %(location_remarks)s,
 value_rating = %(value_rating)s,
 value_remarks = %(value_remarks)s,
 x_factor_rating = %(x_factor_rating)s,
-x_factor_remarks = %(x_factor_remarks)s
+x_factor_remarks = %(x_factor_remarks)s,
+overall_remarks = %(overall_remarks)s
 WHERE id = %(id)s
 """
 
@@ -111,7 +112,8 @@ br.location_remarks,
 br.value_rating,
 br.value_remarks,
 br.x_factor_rating,
-br.x_factor_remarks
+br.x_factor_remarks,
+br.overall_remarks
 FROM burger_review br
 JOIN "user" u ON br.user_id = u.id
 JOIN burger_location bl ON br.burger_location_id = bl.id

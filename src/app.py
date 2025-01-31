@@ -172,6 +172,7 @@ async def review_burger_post(request: Request):
         "value_remarks": request.form.get("value_remarks"),
         "x_factor_rating": request.form.get("x_factor_rating"),
         "x_factor_remarks": request.form.get("x_factor_remarks"),
+        "overall_remarks": request.form.get("overall_remarks")
     }
     await app.ctx.util.add_burger_review(user.username, review)
     return redirect("/burger_review_submitted")

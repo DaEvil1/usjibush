@@ -24,6 +24,7 @@
 
                 <label for="bun_rating">Bun Rating:</label>
                 <select id="bun_rating" name="bun_rating" v-model="formData.bun_rating" required>
+                    <option value="" :selected="formData.bun_rating === null">Select a rating</option>
                     {% for rating in ratings %}
                     <option value="{{ rating }}">{{ rating }}</option>
                     {% endfor %}
@@ -34,6 +35,7 @@
 
                 <label for="patty_rating">Patty Rating:</label>
                 <select id="patty_rating" name="patty_rating" v-model="formData.patty_rating" required>
+                    <option value="" :selected="formData.patty_rating === null">Select a rating</option>
                     {% for rating in ratings %}
                     <option value="{{ rating }}">{{ rating }}</option>
                     {% endfor %}
@@ -44,6 +46,7 @@
 
                 <label for="toppings_rating">Toppings Rating:</label>
                 <select id="toppings_rating" name="toppings_rating" v-model="formData.toppings_rating" required>
+                    <option value="" :selected="formData.toppings_rating === null">Select a rating</option>
                     {% for rating in ratings %}
                     <option value="{{ rating }}">{{ rating }}</option>
                     {% endfor %}
@@ -54,6 +57,7 @@
 
                 <label for="fries_rating">Fries Rating:</label>
                 <select id="fries_rating" name="fries_rating" v-model="formData.fries_rating">
+                    <option value="" :selected="formData.fries_rating === null">Select a rating</option>
                     {% for rating in ratings %}
                     <option value="{{ rating }}">{{ rating }}</option>
                     {% endfor %}
@@ -64,6 +68,7 @@
 
                 <label for="taste_total_rating">Taste Total Rating:</label>
                 <select id="taste_total_rating" name="taste_total_rating" v-model="formData.taste_total_rating" required>
+                    <option value="" :selected="formData.taste_total_rating === null">Select a rating</option>
                     {% for rating in ratings %}
                     <option value="{{ rating }}">{{ rating }}</option>
                     {% endfor %}
@@ -74,6 +79,7 @@
 
                 <label for="location_rating">Location Rating:</label>
                 <select id="location_rating" name="location_rating" v-model="formData.location_rating" required>
+                    <option value="" :selected="formData.location_rating === null">Select a rating</option>
                     {% for rating in ratings %}
                     <option value="{{ rating }}">{{ rating }}</option>
                     {% endfor %}
@@ -84,6 +90,7 @@
 
                 <label for="value_rating">Value Rating:</label>
                 <select id="value_rating" name="value_rating" v-model="formData.value_rating" required>
+                    <option value="" :selected="formData.value_rating === null">Select a rating</option>
                     {% for rating in ratings %}
                     <option value="{{ rating }}">{{ rating }}</option>
                     {% endfor %}
@@ -94,6 +101,7 @@
 
                 <label for="x_factor_rating">X-Factor Rating:</label>
                 <select id="x_factor_rating" name="x_factor_rating" v-model="formData.x_factor_rating" required>
+                    <option value="" :selected="formData.x_factor_rating === null">Select a rating</option>
                     {% for rating in x_factor_ratings %}
                     <option value="{{ rating }}">{{ rating }}</option>
                     {% endfor %}
@@ -101,6 +109,11 @@
 
                 <label for="x_factor_remarks">X-Factor Remarks:</label>
                 <textarea id="x_factor_remarks" name="x_factor_remarks" class="text_box" v-model="formData.x_factor_remarks"></textarea><br>
+
+                <label for="overall_remarks">Overall Remarks:</label>
+                <textarea id="overall_remarks" name="overall_remarks" class="text_box" v-model="formData.overall_remarks"></textarea><br>
+
+                <p><b>Overall Rating: [[ formData.overall_rating ]]</b></p>
 
                 <input type="submit" value="Submit Review">
             </form>

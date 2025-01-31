@@ -74,7 +74,8 @@ CREATE TABLE IF NOT EXISTS burger_review (
     value_rating INT NOT NULL,
     value_remarks TEXT,
     x_factor_rating INT NOT NULL,
-    x_factor_remarks TEXT
+    x_factor_remarks TEXT,
+    overall_remarks TEXT
 )
 ;
 
