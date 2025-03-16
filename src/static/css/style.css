@@ -237,7 +237,7 @@ button {
 }
 
 input[type="text"], select, textarea {
-    width: calc(100% - 100px);
+    width: calc(100% - 50px);
     margin: 0 50px;
     padding: 12px;
     border: 1px solid var(--input-border-color);
@@ -262,19 +262,21 @@ a:visited {
 }
 
 .form_div {
-    width: calc(100% - 100px);
+    width: calc(100% - 25px);
     margin: 0;
     padding: 12px;
     border: 1px solid var(--input-border-color);
     border-radius: 4px;
     box-sizing: border-box;
     resize: vertical;
+    margin: 0 auto;
+
 }
 
 .review {
     text-align: left;
     background-color: var(--background-color);
-    width: calc(100% - 100px);
+    width: calc(100%);
     border: 1px solid var(--input-border-color);
     padding: 15px;
     margin: 10px 0;
@@ -284,5 +286,5 @@ a:visited {
 
 .content {
     margin-top: 160px;
-    width: calc(100% - 25px);
+    width: calc(100%);
 }
