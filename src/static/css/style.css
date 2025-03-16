@@ -284,5 +284,5 @@ a:visited {
 
 .content {
     margin-top: 160px;
-    width: calc(100% - 100px);
+    width: calc(100% - 25px);
 }
